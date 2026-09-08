@@ -301,6 +301,14 @@ Possible future improvements include:
 - Improved natural-language explanations
 - Support for additional document formats
 
+## Mocked / Simplified Components
+
+This project is a working prototype. The university rulebook documents in the `corpus/` directory are used as the source of truth for retrieval.
+
+The current system does not connect to a live university database or university authentication system. User authentication, live policy updates, and database-backed rule management are not implemented.
+
+The answer generation and contradiction/exception detection are implemented using the project's rule retrieval and processing logic rather than an external production university system.
+
 ## Project Status
 
 **Working prototype**
