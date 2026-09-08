@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+pypdf
+reportlab
+scikit-learn
+numpy
+pytest
+httpx

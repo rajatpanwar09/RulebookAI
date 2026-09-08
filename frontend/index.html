@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RulebookAI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Inter, Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 64px;
+            background: #ffffff;
+            border-bottom: 1px solid #dce3ee;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 40px;
+
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 18px;
+            font-weight: 700;
+            color: #14213d;
+        }
+
+        .logo-box {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #2864e8;
+            color: white;
+
+            border-radius: 9px;
+
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 92%;
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding: 45px 0 60px;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+            color: #172033;
+        }
+
+        .hero h1 span {
+            color: #2864e8;
+        }
+
+        .hero p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* ================= QUESTION CARD ================= */
+
+        .question-card {
+            background: white;
+
+            border: 1px solid #dce3ee;
+            border-radius: 14px;
+
+            padding: 22px;
+
+            box-shadow: 0 8px 25px rgba(30, 55, 90, 0.08);
+        }
+
+        .question-card label {
+            display: block;
+
+            font-weight: 700;
+            margin-bottom: 10px;
+
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 120px;
+
+            resize: vertical;
+
+            border: 1px solid #c9d4e4;
+            border-radius: 9px;
+
+            padding: 14px;
+
+            font-size: 15px;
+            color: #172033;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        textarea:focus {
+            border-color: #2864e8;
+
+            box-shadow:
+                0 0 0 3px rgba(40, 100, 232, 0.1);
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+
+            padding: 12px 20px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .ask-btn {
+            flex: 1;
+
+            background: #2864e8;
+            color: white;
+        }
+
+        .ask-btn:hover {
+            background: #1f55c8;
+            transform: translateY(-1px);
+        }
+
+        .ask-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .clear-btn {
+            background: white;
+            color: #344054;
+
+            border: 1px solid #c9d4e4;
+
+            min-width: 90px;
+        }
+
+        .clear-btn:hover {
+            background: #f5f7fa;
+        }
+
+        /* ================= CHIPS ================= */
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        .chip {
+            background: #f7f9fc;
+
+            border: 1px solid #d8e0eb;
+
+            color: #52627a;
+
+            border-radius: 20px;
+
+            padding: 7px 13px;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+        .chip:hover {
+            background: #eaf1ff;
+            border-color: #2864e8;
+            color: #2864e8;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        /* ================= ANSWER ================= */
+
+        .answer-card {
+            background: white;
+
+            border: 1px solid #dce3ee;
+            border-radius: 12px;
+
+            padding: 22px;
+
+            box-shadow: 0 5px 18px rgba(30, 55, 90, 0.05);
+        }
+
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            color: #2864e8;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        .bot-icon {
+            width: 28px;
+            height: 28px;
+
+            background: #edf3ff;
+
+            border-radius: 7px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .answer-content {
+            line-height: 1.8;
+            color: #24324a;
+            font-size: 14px;
+        }
+
+        .answer-content p {
+            margin-bottom: 12px;
+        }
+
+        .answer-content h2 {
+            font-size: 18px;
+            color: #14213d;
+            margin-bottom: 15px;
+        }
+
+        .answer-content h3 {
+            font-size: 16px;
+            margin: 15px 0 8px;
+        }
+
+        .answer-content strong {
+            color: #1555c0;
+        }
+
+        .answer-content ul {
+            margin: 8px 0 15px 22px;
+        }
+
+        .answer-content li {
+            margin-bottom: 6px;
+        }
+
+        /* ================= CONTRADICTION ================= */
+
+        .contradiction {
+            background: #fff8e7;
+
+            border: 1px solid #f0b429;
+
+            border-radius: 12px;
+
+            padding: 16px;
+
+            margin-top: 14px;
+        }
+
+        .contradiction-title {
+            color: #9a6200;
+
+            font-weight: 700;
+
+            margin-bottom: 12px;
+        }
+
+        .contradiction-item {
+            background: white;
+
+            border: 1px solid #f1c76a;
+
+            border-radius: 8px;
+
+            padding: 12px;
+        }
+
+        .contradiction-item strong {
+            color: #a15c00;
+        }
+
+        .contradiction-item p {
+            margin-top: 6px;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+        /* ================= TWO COLUMN ================= */
+
+        .grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 14px;
+
+            margin-top: 14px;
+        }
+
+        .info-card {
+            background: white;
+
+            border: 1px solid #dce3ee;
+
+            border-radius: 12px;
+
+            padding: 18px;
+
+            min-height: 180px;
+        }
+
+        .info-title {
+            font-size: 17px;
+
+            font-weight: 700;
+
+            margin-bottom: 14px;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ================= SOURCES ================= */
+
+        .source {
+            background: #edf4ff;
+
+            color: #1555c0;
+
+            padding: 10px 12px;
+
+            border-radius: 7px;
+
+            font-size: 13px;
+
+            margin-bottom: 8px;
+
+            border: 1px solid #dbe8ff;
+        }
+
+        /* ================= RULES ================= */
+
+        .rule {
+            border: 1px solid #dce3ee;
+
+            border-radius: 8px;
+
+            padding: 12px;
+
+            margin-bottom: 9px;
+        }
+
+        .rule-title {
+            color: #1555c0;
+
+            font-weight: 700;
+
+            font-size: 13px;
+
+            margin-bottom: 5px;
+        }
+
+        .rule-text {
+            color: #53627a;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        .score {
+            margin-top: 7px;
+
+            color: #7b8799;
+
+            font-size: 10px;
+        }
+
+        .score span {
+            color: #2864e8;
+            font-weight: bold;
+        }
+
+        /* ================= RECENT ================= */
+
+        .recent {
+            background: white;
+
+            border: 1px solid #dce3ee;
+
+            border-radius: 10px;
+
+            padding: 13px;
+
+            font-size: 13px;
+
+            color: #1555c0;
+
+            margin-bottom: 8px;
+        }
+
+        .recent-time {
+            display: block;
+
+            color: #8a95a6;
+
+            font-size: 10px;
+
+            margin-top: 5px;
+        }
+
+        /* ================= LOADING ================= */
+
+        .loading {
+            text-align: center;
+
+            padding: 30px;
+
+            color: #53627a;
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+
+            border: 3px solid #dce3ee;
+            border-top-color: #2864e8;
+
+            border-radius: 50%;
+
+            animation: spin 0.8s linear infinite;
+
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ================= ERROR ================= */
+
+        .error {
+            background: #fff0f0;
+
+            border: 1px solid #efb1b1;
+
+            color: #a33a3a;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            margin-top: 15px;
+        }
+
+        .error code {
+            background: #ffe1e1;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            text-align: center;
+
+            margin-top: 45px;
+
+            color: #8290a5;
+
+            font-size: 11px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .container {
+                width: 94%;
+                padding-top: 30px;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .clear-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <div class="logo-box">
+                R
+            </div>
+
+            RulebookAI
+
+        </div>
+
+    </nav>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <h1>
+                Ask <span>RulebookAI</span>
+            </h1>
+
+            <p>
+                Search and understand university rules, regulations and policies.
+            </p>
+
+        </section>
+
+
+        <!-- QUESTION -->
+
+        <section class="question-card">
+
+            <label>
+                Ask a question about the university rules
+            </label>
+
+            <textarea
+                id="question"
+                placeholder="For example: What is the minimum attendance required for an examination?"
+            ></textarea>
+
+            <div class="buttons">
+
+                <button
+                    class="ask-btn"
+                    id="askButton"
+                    onclick="askQuestion()"
+                >
+                    Ask RulebookAI
+                </button>
+
+                <button
+                    class="clear-btn"
+                    onclick="clearQuestion()"
+                >
+                    Clear
+                </button>
+
+            </div>
+
+
+            <!-- SUGGESTIONS -->
+
+            <div class="chips">
+
+                <button
+                    class="chip"
+                    onclick="setQuestion('What is the minimum attendance required for an examination?')"
+                >
+                    Attendance requirement
+                </button>
+
+                <button
+                    class="chip"
+                    onclick="setQuestion('Can students use mobile phones during examinations?')"
+                >
+                    Mobile phones
+                </button>
+
+                <button
+                    class="chip"
+                    onclick="setQuestion('What identification is required during an examination?')"
+                >
+                    Exam identification
+                </button>
+
+                <button
+                    class="chip"
+                    onclick="setQuestion('What are the rules about plagiarism?')"
+                >
+                    Plagiarism
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ANSWER -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                Answer
+            </h2>
+
+            <div id="answerArea">
+
+                <div class="answer-card">
+
+                    <div class="answer-header">
+
+                        <div class="bot-icon">
+                            🤖
+                        </div>
+
+                        RulebookAI Answer
+
+                    </div>
+
+                    <div class="answer-content">
+
+                        Ask a question above to get an answer from the university rulebook.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONTRADICTIONS -->
+
+        <div id="contradictionArea"></div>
+
+
+        <!-- SOURCES + RULES -->
+
+        <div class="grid">
+
+            <div class="info-card">
+
+                <div class="info-title">
+                    📚 Sources
+                </div>
+
+                <div id="sources">
+                    No sources yet.
+                </div>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-title">
+                    🔍 Rules Used
+                </div>
+
+                <div id="rules">
+                    No rules yet.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT QUESTIONS -->
+
+        <section class="section">
+
+            <h2 class="section-title">
+                🕘 Recent Questions
+            </h2>
+
+            <div id="recentQuestions">
+
+                <div class="recent">
+                    No questions asked yet.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer>
+            RulebookAI © 2026 · University Rule Intelligence System
+        </footer>
+
+    </main>
+
+
+    <script>
+
+        /* ============================================
+           BACKEND URL
+        ============================================ */
+
+        const API_URL = "http://127.0.0.1:8000/ask";
+
+
+        /* ============================================
+           ELEMENTS
+        ============================================ */
+
+        const questionInput =
+            document.getElementById("question");
+
+        const askButton =
+            document.getElementById("askButton");
+
+        const answerArea =
+            document.getElementById("answerArea");
+
+        const contradictionArea =
+            document.getElementById("contradictionArea");
+
+        const sourcesArea =
+            document.getElementById("sources");
+
+        const rulesArea =
+            document.getElementById("rules");
+
+        const recentArea =
+            document.getElementById("recentQuestions");
+
+
+        /* ============================================
+           SET QUESTION
+        ============================================ */
+
+        function setQuestion(question) {
+
+            questionInput.value = question;
+
+            questionInput.focus();
+
+        }
+
+
+        /* ============================================
+           CLEAR
+        ============================================ */
+
+        function clearQuestion() {
+
+            questionInput.value = "";
+
+            answerArea.innerHTML = `
+                <div class="answer-card">
+
+                    <div class="answer-header">
+
+                        <div class="bot-icon">
+                            🤖
+                        </div>
+
+                        RulebookAI Answer
+
+                    </div>
+
+                    <div class="answer-content">
+                        Ask a question above to get an answer from the university rulebook.
+                    </div>
+
+                </div>
+            `;
+
+            contradictionArea.innerHTML = "";
+
+            sourcesArea.innerHTML =
+                "No sources yet.";
+
+            rulesArea.innerHTML =
+                "No rules yet.";
+
+        }
+
+
+        /* ============================================
+           ESCAPE HTML
+        ============================================ */
+
+        function escapeHTML(text) {
+
+            if (!text) return "";
+
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* ============================================
+           MARKDOWN FORMATTER
+        ============================================ */
+
+        function formatAnswer(text) {
+
+            if (!text) {
+                return "No answer returned.";
+            }
+
+            text = escapeHTML(text);
+
+            /* Bold */
+
+            text = text.replace(
+                /\*\*(.*?)\*\*/g,
+                "<strong>$1</strong>"
+            );
+
+
+            /* Headings */
+
+            text = text.replace(
+                /^### (.*)$/gm,
+                "<h3>$1</h3>"
+            );
+
+            text = text.replace(
+                /^## (.*)$/gm,
+                "<h2>$1</h2>"
+            );
+
+
+            /* Bullet points */
+
+            const lines = text.split("\n");
+
+            let html = "";
+
+            let inList = false;
+
+            for (let line of lines) {
+
+                line = line.trim();
+
+                if (line.startsWith("- ")) {
+
+                    if (!inList) {
+
+                        html += "<ul>";
+
+                        inList = true;
+
+                    }
+
+                    html +=
+                        `<li>${line.substring(2)}</li>`;
+
+                } else {
+
+                    if (inList) {
+
+                        html += "</ul>";
+
+                        inList = false;
+
+                    }
+
+                    if (line) {
+
+                        if (
+                            line.startsWith("<h2>") ||
+                            line.startsWith("<h3>")
+                        ) {
+
+                            html += line;
+
+                        } else {
+
+                            html += `<p>${line}</p>`;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            if (inList) {
+                html += "</ul>";
+            }
+
+            return html;
+
+        }
+
+
+        /* ============================================
+           ASK QUESTION
+        ============================================ */
+
+        async function askQuestion() {
+
+            const question =
+                questionInput.value.trim();
+
+
+            if (!question) {
+
+                alert("Please enter a question.");
+
+                questionInput.focus();
+
+                return;
+
+            }
+
+
+            /* Disable button */
+
+            askButton.disabled = true;
+
+            askButton.innerText =
+                "Searching rulebook...";
+
+
+            /* Loading UI */
+
+            answerArea.innerHTML = `
+
+                <div class="answer-card">
+
+                    <div class="loading">
+
+                        <div class="spinner"></div>
+
+                        Searching university rules...
+
+                    </div>
+
+                </div>
+
+            `;
+
+            contradictionArea.innerHTML = "";
+
+
+            try {
+
+                /* ====================================
+                   SEND REQUEST TO FASTAPI
+                ==================================== */
+
+                const response = await fetch(
+                    API_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            question: question
+                        })
+                    }
+                );
+
+
+                /* HTTP error */
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `Server returned ${response.status}`
+                    );
+
+                }
+
+
+                /* Parse JSON */
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "RulebookAI response:",
+                    data
+                );
+
+
+                /* ====================================
+                   ANSWER
+                ==================================== */
+
+                answerArea.innerHTML = `
+
+                    <div class="answer-card">
+
+                        <div class="answer-header">
+
+                            <div class="bot-icon">
+                                🤖
+                            </div>
+
+                            RulebookAI Answer
+
+                        </div>
+
+                        <div class="answer-content">
+
+                            ${formatAnswer(data.answer)}
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                /* ====================================
+                   SOURCES
+                ==================================== */
+
+                if (
+                    Array.isArray(data.sources) &&
+                    data.sources.length > 0
+                ) {
+
+                    sourcesArea.innerHTML =
+                        data.sources
+                            .map(source => `
+
+                                <div class="source">
+                                    📄 ${escapeHTML(source)}
+                                </div>
+
+                            `)
+                            .join("");
+
+                } else {
+
+                    sourcesArea.innerHTML =
+                        "No sources returned.";
+
+                }
+
+
+                /* ====================================
+                   RULES
+                ==================================== */
+
+                if (
+                    Array.isArray(data.rules) &&
+                    data.rules.length > 0
+                ) {
+
+                    rulesArea.innerHTML =
+                        data.rules
+                            .map(rule => `
+
+                                <div class="rule">
+
+                                    <div class="rule-title">
+
+                                        ${escapeHTML(
+                                            rule.title ||
+                                            extractRuleTitle(rule.text)
+                                        )}
+
+                                    </div>
+
+                                    <div class="rule-text">
+
+                                        ${formatAnswer(
+                                            rule.text || ""
+                                        )}
+
+                                    </div>
+
+                                    <div class="score">
+
+                                        Relevance score:
+                                        <span>
+                                            ${rule.score ?? "N/A"}
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            `)
+                            .join("");
+
+                } else {
+
+                    rulesArea.innerHTML =
+                        "No rules returned.";
+
+                }
+
+
+                /* ====================================
+                   CONTRADICTIONS
+                ==================================== */
+
+                if (
+                    Array.isArray(data.contradictions) &&
+                    data.contradictions.length > 0
+                ) {
+
+                    contradictionArea.innerHTML = `
+
+                        <section class="contradiction">
+
+                            <div class="contradiction-title">
+
+                                ⚠️ Potential Contradiction Detected
+
+                            </div>
+
+                            ${data.contradictions
+                                .map(item => `
+
+                                    <div class="contradiction-item">
+
+                                        <strong>
+
+                                            ${escapeHTML(
+                                                item.title ||
+                                                "Rule conflict"
+                                            )}
+
+                                        </strong>
+
+                                        <p>
+
+                                            ${escapeHTML(
+                                                item.description || ""
+                                            )}
+
+                                        </p>
+
+                                    </div>
+
+                                `)
+                                .join("")}
+
+                        </section>
+
+                    `;
+
+                } else {
+
+                    contradictionArea.innerHTML = "";
+
+                }
+
+
+                /* ====================================
+                   RECENT QUESTIONS
+                ==================================== */
+
+                addRecentQuestion(question);
+
+
+            } catch (error) {
+
+                console.error(
+                    "RulebookAI Error:",
+                    error
+                );
+
+
+                answerArea.innerHTML = `
+
+                    <div class="error">
+
+                        <strong>
+                            Unable to get an answer.
+                        </strong>
+
+                        <br><br>
+
+                        Make sure your FastAPI backend is running at:
+
+                        <br><br>
+
+                        <code>
+                            http://127.0.0.1:8000
+                        </code>
+
+                        <br><br>
+
+                        Error:
+
+                        ${escapeHTML(error.message)}
+
+                    </div>
+
+                `;
+
+            }
+
+
+            /* Enable button */
+
+            askButton.disabled = false;
+
+            askButton.innerText =
+                "Ask RulebookAI";
+
+        }
+
+
+        /* ============================================
+           EXTRACT RULE TITLE
+        ============================================ */
+
+        function extractRuleTitle(text) {
+
+            if (!text) {
+                return "University Rule";
+            }
+
+            const firstLine =
+                text.split("\n")[0].trim();
+
+            return firstLine || "University Rule";
+
+        }
+
+
+        /* ============================================
+           RECENT QUESTIONS
+        ============================================ */
+
+        function addRecentQuestion(question) {
+
+            const time =
+                new Date().toLocaleTimeString(
+                    [],
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+
+            const previous =
+                recentArea.innerHTML;
+
+            if (
+                previous.includes(
+                    "No questions asked yet."
+                )
+            ) {
+
+                recentArea.innerHTML = "";
+
+            }
+
+
+            const div =
+                document.createElement("div");
+
+            div.className = "recent";
+
+            div.innerHTML = `
+
+                ${escapeHTML(question)}
+
+                <span class="recent-time">
+
+                    ${time}
+
+                </span>
+
+            `;
+
+
+            recentArea.prepend(div);
+
+        }
+
+
+        /* ============================================
+           CTRL + ENTER
+        ============================================ */
+
+        questionInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter" &&
+                    event.ctrlKey
+                ) {
+
+                    askQuestion();
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

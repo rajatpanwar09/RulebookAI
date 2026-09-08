@@ -1,0 +1,7 @@
+fee_type,semester,deadline,late_fee,section
+Tuition Fee,Odd Semester,15 July 2026,500,FR-1.1
+Tuition Fee,Even Semester,15 January 2027,500,FR-1.1
+Examination Fee,Odd Semester,20 November 2026,250,AR-5.2
+Examination Fee,Even Semester,20 April 2027,250,AR-5.2
+Hostel Fee,Odd Semester,10 July 2026,1000,RH-2.1
+Hostel Fee,Even Semester,10 January 2027,1000,RH-2.1
